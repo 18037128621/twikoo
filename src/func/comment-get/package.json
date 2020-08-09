@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "blueimp-md5": "^2.17.0",
     "tcb-admin-node": "^1.23.0"
   }
 }

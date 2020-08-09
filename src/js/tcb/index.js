@@ -12,8 +12,7 @@ const builtInOptions = [
 const tcb = {
   sdk: null,
   app: null,
-  auth: null,
-  db: null
+  auth: null
 }
 
 async function install (options = {}, tcbSdk) {
@@ -43,7 +42,6 @@ function checkOptions (options) {
 async function init (options) {
   initApp(options.envId)
   await initAuth()
-  initDb(options.collection)
 }
 
 function initApp (envId) {
@@ -63,10 +61,6 @@ async function initAuth () {
         .catch(reject)
     }
   })
-}
-
-function initDb (collectionName) {
-  tcb.db = tcb.app.database()
 }
 
 export {

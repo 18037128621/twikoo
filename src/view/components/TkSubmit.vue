@@ -1,23 +1,26 @@
 <template>
   <div class="tk-new">
     <div class="tk-row">
-      <tk-avatar :nick="nick" :mail="mail" :site="site" @update="onMetaUpdate" />
+      <tk-avatar :nick="nick" :mail="mail" :link="link" @update="onMetaUpdate" />
       <el-input class="tk-input"
           type="textarea"
           :autosize="{ minRows: 2 }"
           placeholder="请输入内容"
-          v-model="content" />
+          v-model="comment" />
     </div>
     <div class="tk-row actions">
-      <el-button class="tk-send"
+      <el-button class="tk-preview"
           size="small"
           @click="preview">预览</el-button>
       <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip">
-        <el-button class="tk-send"
-            type="primary"
-            size="small"
-            :disabled="!canSend"
-            @click="send">发送</el-button>
+        <!-- 解决 tooltip 在 disabled button 上不起作用 -->
+        <div class="tk-send">
+          <el-button class="tk-send-button"
+              type="primary"
+              size="small"
+              :disabled="!canSend"
+              @click="send">发送</el-button>
+        </div>
       </el-tooltip>
     </div>
   </div>
@@ -30,15 +33,13 @@ export default {
   components: {
     TkAvatar
   },
-  props: {
-    isSending: Boolean
-  },
   data () {
     return {
-      content: '',
+      isSending: false,
+      comment: '',
       nick: '',
       mail: '',
-      site: ''
+      link: ''
     }
   },
   computed: {
@@ -46,40 +47,41 @@ export default {
       return !this.isSending
           && !!this.nick
           && !!this.mail
-          && !!this.content
+          && !!this.comment
     },
     disableTooltip () {
       if (this.isSending) return '发送中'
       else if (!this.nick) return '请填写昵称'
       else if (!this.mail) return '请填写邮箱'
-      else if (!this.content) return '请填写内容'
+      else if (!this.comment) return '请填写内容'
     }
   },
   methods: {
     onMetaUpdate (metaData) {
       this.nick = metaData.nick
       this.mail = metaData.mail
-      this.site = metaData.site
+      this.link = metaData.link
     },
     preview () {},
-    send () {
-      this.$emit('send', {
+    async send () {
+      const comment = {
         nick: this.nick,
         mail: this.mail,
-        site: this.site,
-        master: this.mail === this.$twikoo.masterMail,
-        content: this.content
+        link: this.link,
+        ua: navigator.userAgent,
+        url: window.location.pathname,
+        comment: this.comment
+      }
+      const id = await this.$tcb.app.callFunction({
+        name: 'comment-submit',
+        data: comment
       })
-    },
-    onSendComplete () {
-      this.content = ''
-    }
-  },
-  watch: {
-    isSending (newVal, oldVal) {
-      if (newVal === false && oldVal === true) {
+      if (id && id.result && id.result.id) {
         this.onSendComplete()
       }
+    },
+    onSendComplete () {
+      this.comment = ''
     }
   }
 }

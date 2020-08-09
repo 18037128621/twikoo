@@ -16,6 +16,7 @@ module.exports = {
   functionRoot: './src/func',
   functions: [
     { name: 'migrate', ...defaultFunctionConfig },
-    { name: 'comment-get', ...defaultFunctionConfig }
+    { name: 'comment-get', ...defaultFunctionConfig },
+    { name: 'comment-submit', ...defaultFunctionConfig }
   ]
 }

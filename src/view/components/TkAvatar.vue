@@ -6,19 +6,19 @@
       </div>
       <template v-slot:content>
         <div class="meta-input-group">
-          <el-input placeholder="请输入内容" v-model="metaData.nick">
+          <el-input placeholder="请输入内容" v-model="metaData.nick" size="mini">
             <template slot="prepend">昵称</template>
           </el-input>
-          <el-input placeholder="请输入内容" v-model="metaData.mail">
+          <el-input placeholder="请输入内容" v-model="metaData.mail" size="mini">
             <template slot="prepend">邮箱</template>
           </el-input>
-          <el-input placeholder="请输入内容" v-model="metaData.site">
+          <el-input placeholder="请输入内容" v-model="metaData.link" size="mini">
             <template slot="prepend">网址</template>
           </el-input>
         </div>
       </template>
     </el-tooltip>
-    <el-tooltip v-if="readonly" class="item" effect="dark" placement="bottom-start" :content="nick || '匿名'">
+    <el-tooltip v-if="readonly" class="item" effect="dark" placement="bottom" :content="nick || '匿名'">
       <div class="tk-avatar-placeholder">
         <img v-if="avatar" :src="avatar" alt="">
       </div>
@@ -33,7 +33,8 @@ export default {
   props: {
     nick: String,
     mail: String,
-    site: String,
+    mailMd5: String,
+    link: String,
     readonly: Boolean
   },
   data () {
@@ -41,7 +42,7 @@ export default {
       metaData: {
         nick: '',
         mail: '',
-        site: ''
+        link: ''
       },
       avatar: '',
       showMetaInput: false
@@ -59,7 +60,9 @@ export default {
       this.$emit('update', this.metaData)
     },
     updateAvatar () {
-      if (this.mail) {
+      if (this.mailMd5) {
+        this.avatar = `https://gravatar.loli.net/avatar/${this.mailMd5}`
+      } else if (this.mail) {
         this.avatar = `https://gravatar.loli.net/avatar/${md5(this.mail)}`
       } else {
         this.avatar = ''
@@ -68,7 +71,7 @@ export default {
     onClick () {
       this.$emit('click')
       if (this.readonly) {
-        this.site && window.open(this.site)
+        this.link && window.open(this.link)
       } else {
         this.showMetaInput = !this.showMetaInput
       }
@@ -80,7 +83,7 @@ export default {
       this.metaData.mail = newVal
       this.updateAvatar()
     },
-    site (newVal) { this.metaData.site = newVal }
+    link (newVal) { this.metaData.link = newVal }
   },
   mounted () {
     if (this.readonly) {

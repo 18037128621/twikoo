@@ -1,17 +1,17 @@
 <template>
   <div id="twikoo" class="twikoo">
-    <tk-new />
+    <tk-submit />
     <tk-comments />
   </div>
 </template>
 
 <script>
-import TkNew from './components/TkNew.vue'
+import TkSubmit from './components/TkSubmit.vue'
 import TkComments from './components/TkComments.vue'
 
 export default {
   components: {
-    TkNew,
+    TkSubmit,
     TkComments
   }
 }

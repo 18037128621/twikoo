@@ -1,7 +1,8 @@
 <template>
   <div class="tk-comments">
+    <h3>{{ comments.length }} 条评论</h3>
     <tk-comment v-for="comment in comments"
-        :key="comment._id"
+        :key="comment.id"
         :comment="comment" />
   </div>
 </template>
@@ -20,18 +21,17 @@ export default {
   },
   methods: {
     async initComments () {
-      const comments = await this.$tcb.db
-        .collection('comment')
-        .orderBy('updated', 'asc')
-        .get()
-      this.comments = comments.data
+      const comments = await this.$tcb.app.callFunction({
+        name: 'comment-get',
+        data: { url: window.location.pathname }
+      })
+      if (comments && comments.result && comments.result.data) {
+        this.comments = comments.result.data
+      }
     }
   },
-  async mounted () {
-    debugger
-    if (this.$tcb && this.$tcb.db) {
-      await this.initComments()
-    }
+  mounted () {
+    this.initComments()
   }
 }
 </script>
