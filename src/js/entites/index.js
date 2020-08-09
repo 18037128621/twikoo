@@ -1,9 +1,7 @@
 import Comment from './comment'
-import Like from './Like'
-import Post from './Post'
+import Counter from './counter'
 
 export {
   Comment,
-  Like,
-  Post
+  Counter
 }

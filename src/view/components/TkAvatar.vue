@@ -1,13 +1,21 @@
 <template>
   <div class="tk-avatar" @click="onClick">
-    <el-tooltip v-if="!readonly" class="item" effect="dark" placement="bottom-start" v-model="showMetaInput" manual>
+    <el-tooltip v-if="!readonly" class="item" effect="light" placement="bottom-start" v-model="showMetaInput" manual>
       <div class="tk-avatar-placeholder">
         <img v-if="avatar" :src="avatar" alt="">
       </div>
       <template v-slot:content>
-        <input class="tk-meta-input" v-model="metaData.nick" placeholder="昵称" @blur="updateMeta" />
-        <input class="tk-meta-input" v-model="metaData.mail" placeholder="邮箱" @blur="updateMeta" />
-        <input class="tk-meta-input" v-model="metaData.site" placeholder="网址" @blur="updateMeta" />
+        <div class="meta-input-group">
+          <el-input placeholder="请输入内容" v-model="metaData.nick">
+            <template slot="prepend">昵称</template>
+          </el-input>
+          <el-input placeholder="请输入内容" v-model="metaData.mail">
+            <template slot="prepend">邮箱</template>
+          </el-input>
+          <el-input placeholder="请输入内容" v-model="metaData.site">
+            <template slot="prepend">网址</template>
+          </el-input>
+        </div>
       </template>
     </el-tooltip>
     <el-tooltip v-if="readonly" class="item" effect="dark" placement="bottom-start" :content="nick || '匿名'">
@@ -101,14 +109,12 @@ export default {
 .tk-avatar img {
   height: 2rem;
 }
-.tk-meta-input {
-  color: white;
-  border: none;
-  border-bottom: 1px solid grey;
-  background: none;
+.meta-input-group {
+  display: flex;
+  flex-direction: column;
 }
-.tk-meta-input:focus {
-  border-bottom-color: white;
+.el-input {
+  max-width: 16rem;
 }
 </style>
 

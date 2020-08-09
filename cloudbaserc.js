@@ -15,6 +15,7 @@ module.exports = {
   envId: config.envId,
   functionRoot: './src/func',
   functions: [
-    { name: 'migrate', ...defaultFunctionConfig }
+    { name: 'migrate', ...defaultFunctionConfig },
+    { name: 'comment-get', ...defaultFunctionConfig }
   ]
 }

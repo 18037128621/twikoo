@@ -1,18 +1,25 @@
 <template>
   <div class="tk-new">
-    <tk-avatar :nick="nick" :mail="mail" :site="site" @update="onMetaUpdate" />
-    <el-input class="tk-input"
-        type="textarea"
-        autosize
-        placeholder="请输入内容"
-        v-model="content" />
-    <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip">
+    <div class="tk-row">
+      <tk-avatar :nick="nick" :mail="mail" :site="site" @update="onMetaUpdate" />
+      <el-input class="tk-input"
+          type="textarea"
+          :autosize="{ minRows: 2 }"
+          placeholder="请输入内容"
+          v-model="content" />
+    </div>
+    <div class="tk-row actions">
       <el-button class="tk-send"
-          type="primary"
           size="small"
-          :disabled="!canSend"
-          @click="send">发送</el-button>
-    </el-tooltip>
+          @click="preview">预览</el-button>
+      <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip">
+        <el-button class="tk-send"
+            type="primary"
+            size="small"
+            :disabled="!canSend"
+            @click="send">发送</el-button>
+      </el-tooltip>
+    </div>
   </div>
 </template>
 
@@ -54,6 +61,7 @@ export default {
       this.mail = metaData.mail
       this.site = metaData.site
     },
+    preview () {},
     send () {
       this.$emit('send', {
         nick: this.nick,
@@ -80,7 +88,15 @@ export default {
 <style scoped>
 .tk-new {
   display: flex;
+  flex-direction: column;
+}
+.tk-row {
+  display: flex;
   flex-direction: row;
+}
+.tk-row.actions {
+  margin-top: 1rem;
+  justify-content: flex-end;
 }
 .tk-avatar {
   margin-right: 1rem;
