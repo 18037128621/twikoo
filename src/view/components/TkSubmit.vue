@@ -1,5 +1,5 @@
 <template>
-  <div class="tk-new">
+  <div class="tk-submit">
     <div class="tk-row">
       <tk-avatar :nick="nick" :mail="mail" :link="link" @update="onMetaUpdate" />
       <el-input class="tk-input"
@@ -9,6 +9,10 @@
           v-model="comment" />
     </div>
     <div class="tk-row actions">
+      <el-button class="tk-cancel"
+          v-if="!!replyId"
+          size="small"
+          @click="cancel">取消</el-button>
       <el-button class="tk-preview"
           size="small"
           @click="preview">预览</el-button>
@@ -32,6 +36,10 @@ import TkAvatar from './TkAvatar.vue'
 export default {
   components: {
     TkAvatar
+  },
+  props: {
+    replyId: String,
+    pid: String
   },
   data () {
     return {
@@ -62,7 +70,12 @@ export default {
       this.mail = metaData.mail
       this.link = metaData.link
     },
-    preview () {},
+    cancel () {
+      this.$emit('cancel')
+    },
+    preview () {
+      // TODO
+    },
     async send () {
       const comment = {
         nick: this.nick,
@@ -70,7 +83,9 @@ export default {
         link: this.link,
         ua: navigator.userAgent,
         url: window.location.pathname,
-        comment: this.comment
+        comment: this.comment,
+        pid: this.pid ? this.pid : this.replyId,
+        rid: this.replyId
       }
       const id = await this.$tcb.app.callFunction({
         name: 'comment-submit',
@@ -82,13 +97,14 @@ export default {
     },
     onSendComplete () {
       this.comment = ''
+      this.$emit('load')
     }
   }
 }
 </script>
 
 <style scoped>
-.tk-new {
+.tk-submit {
   display: flex;
   flex-direction: column;
 }
@@ -107,6 +123,6 @@ export default {
   flex: 1;
 }
 .tk-send {
-  margin-left: 1rem;
+  margin-left: 10px;
 }
 </style>

@@ -1,9 +1,14 @@
 <template>
   <div class="tk-comments">
-    <h3>{{ comments.length }} 条评论</h3>
-    <tk-comment v-for="comment in comments"
+    <div class="tk-comments-container" v-loading="loading">
+      <h1>{{ comments.length }} 条评论</h1>
+      <tk-comment v-for="comment in comments"
         :key="comment.id"
-        :comment="comment" />
+        :comment="comment"
+        :replying="replyId === comment.id"
+        @reply="onReply"
+        @load="initComments" />
+    </div>
   </div>
 </template>
 
@@ -16,11 +21,14 @@ export default {
   },
   data () {
     return {
-      comments: []
+      loading: true,
+      comments: [],
+      replyId: ''
     }
   },
   methods: {
     async initComments () {
+      this.loading = true
       const comments = await this.$tcb.app.callFunction({
         name: 'comment-get',
         data: { url: window.location.pathname }
@@ -28,6 +36,10 @@ export default {
       if (comments && comments.result && comments.result.data) {
         this.comments = comments.result.data
       }
+      this.loading = false
+    },
+    onReply (id) {
+      this.replyId = id
     }
   },
   mounted () {
@@ -37,5 +49,7 @@ export default {
 </script>
 
 <style scoped>
-
+.tk-comments-container {
+  min-height: 10rem;
+}
 </style>

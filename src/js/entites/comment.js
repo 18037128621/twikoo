@@ -20,6 +20,10 @@ class Comment {
     this.isSpam = model.isSpam // 是否垃圾评论
     this.master = model.master || false // 博主标识
 
+    /* 回复数据 */
+    this.pid = model.pid // 回复的 ID
+    this.rid = model.rid // 评论楼 ID
+
     /* 时间 */
     this.created = model.created || timestamp()
     this.updated = model.updated || timestamp()

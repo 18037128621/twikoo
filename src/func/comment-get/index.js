@@ -37,19 +37,30 @@ exports.main = async (event, context) => {
 function parse (comments) {
   const result = []
   for (const comment of comments) {
-    result.push({
-      id: comment._id,
-      nick: comment.nick,
-      mailMd5: comment.mailMd5 || md5(comment.mail),
-      link: comment.link,
-      comment: comment.comment,
-      ua: comment.ua,
-      master: comment.master,
-      created: comment.created,
-      updated: comment.updated
-    })
+    if (!comment.rid) {
+      const replies = comments
+        .filter((item) => item.rid === comment._id)
+        .map((item) => toDto(item))
+        .sort((a, b) => a.created - b.created)
+      result.push(toDto(comment, replies))
+    }
   }
   return result
+}
+
+function toDto (comment, replies = []) {
+  return {
+    id: comment._id,
+    nick: comment.nick,
+    mailMd5: comment.mailMd5 || md5(comment.mail),
+    link: comment.link,
+    comment: comment.comment,
+    ua: comment.ua,
+    master: comment.master,
+    replies: replies,
+    created: comment.created,
+    updated: comment.updated
+  }
 }
 
 /**

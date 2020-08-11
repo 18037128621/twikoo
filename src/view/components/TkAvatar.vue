@@ -51,7 +51,10 @@ export default {
   methods: {
     initMeta () {
       if (localStorage.getItem('twikoo')) {
-        this.metaData = JSON.parse(localStorage.getItem('twikoo'))
+        const metaData = JSON.parse(localStorage.getItem('twikoo'))
+        this.metaData.nick = metaData.nick
+        this.metaData.mail = metaData.mail
+        this.metaData.link = metaData.link
       }
       this.updateMeta()
     },

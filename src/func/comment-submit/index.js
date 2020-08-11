@@ -8,12 +8,14 @@ const db = app.database()
 
 /**
  * 提交评论
- * @param {String} event.nick // 昵称
- * @param {String} event.mail // 邮箱
- * @param {String} event.link // 网址
- * @param {String} event.ua // UserAgent
+ * @param {String} event.nick 昵称
+ * @param {String} event.mail 邮箱
+ * @param {String} event.link 网址
+ * @param {String} event.ua UserAgent
  * @param {String} event.url 评论页地址
  * @param {String} event.comment 评论内容
+ * @param {String} event.pid 回复的 ID
+ * @param {String} event.rid 评论楼 ID
  */
 exports.main = async (event, context) => {
   const res = {}
@@ -53,6 +55,8 @@ function parse (comment) {
     ua: comment.ua,
     url: comment.url,
     comment: comment.comment,
+    pid: comment.pid,
+    rid: comment.rid,
     created: timestamp,
     updated: timestamp
   }
