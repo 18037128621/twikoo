@@ -4,9 +4,10 @@
       <tk-avatar :nick="nick" :mail="mail" :link="link" @update="onMetaUpdate" />
       <el-input class="tk-input"
           type="textarea"
-          :autosize="{ minRows: 2 }"
+          v-model="comment"
           placeholder="请输入内容"
-          v-model="comment" />
+          :autosize="{ minRows: 3 }"
+          @change="updatePreview" />
     </div>
     <div class="tk-row actions">
       <el-button class="tk-cancel"
@@ -15,9 +16,10 @@
           @click="cancel">取消</el-button>
       <el-button class="tk-preview"
           size="small"
+          :disabled="!canSend"
           @click="preview">预览</el-button>
-      <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip">
-        <!-- 解决 tooltip 在 disabled button 上不起作用 -->
+      <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip" :disabled="!disableTooltip">
+        <!-- 套一层 div 解决 tooltip 在 disabled button 上不起作用 -->
         <div class="tk-send">
           <el-button class="tk-send-button"
               type="primary"
@@ -27,11 +29,13 @@
         </div>
       </el-tooltip>
     </div>
+    <div class="tk-preview" v-if="isPreviewing" v-html="commentHtml"></div>
   </div>
 </template>
 
 <script>
 import TkAvatar from './TkAvatar.vue'
+import { marked } from '../../js/utils'
 
 export default {
   components: {
@@ -44,7 +48,9 @@ export default {
   data () {
     return {
       isSending: false,
+      isPreviewing: false,
       comment: '',
+      commentHtml: '',
       nick: '',
       mail: '',
       link: ''
@@ -74,16 +80,23 @@ export default {
       this.$emit('cancel')
     },
     preview () {
-      // TODO
+      this.isPreviewing = !this.isPreviewing
+      this.updatePreview()
+    },
+    updatePreview () {
+      if (this.isPreviewing) {
+        this.commentHtml = marked(this.comment)
+      }
     },
     async send () {
+      this.isSending = true
       const comment = {
         nick: this.nick,
         mail: this.mail,
         link: this.link,
         ua: navigator.userAgent,
         url: window.location.pathname,
-        comment: this.comment,
+        comment: marked(this.comment),
         pid: this.pid ? this.pid : this.replyId,
         rid: this.replyId
       }
@@ -97,6 +110,7 @@ export default {
     },
     onSendComplete () {
       this.comment = ''
+      this.isSending = false
       this.$emit('load')
     }
   }

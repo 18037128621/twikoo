@@ -15,7 +15,7 @@ const tcb = {
   auth: null
 }
 
-async function install (options = {}, tcbSdk) {
+async function install (tcbSdk, options = {}) {
   tcb.sdk = tcbSdk
   checkOptions(options)
   await init(options)

@@ -13,7 +13,7 @@ const defaultFunctionConfig = {
 
 module.exports = {
   envId: config.envId,
-  functionRoot: './src/func',
+  functionRoot: './src/function',
   functions: [
     { name: 'migrate', ...defaultFunctionConfig },
     { name: 'comment-get', ...defaultFunctionConfig },

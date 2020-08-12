@@ -1,5 +1,6 @@
 import constant from './constant'
 import timeago from './timeago'
+import marked from './marked'
 
 const isNotSet = (option) => {
   return option === undefined || option === null || option === ''
@@ -26,5 +27,6 @@ export {
   isNotSet,
   logger,
   timeago,
-  timestamp
+  timestamp,
+  marked
 }

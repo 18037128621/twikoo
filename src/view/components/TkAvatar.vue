@@ -6,13 +6,13 @@
       </div>
       <template v-slot:content>
         <div class="meta-input-group">
-          <el-input placeholder="请输入内容" v-model="metaData.nick" size="mini">
+          <el-input placeholder="必填" v-model="metaData.nick" size="mini">
             <template slot="prepend">昵称</template>
           </el-input>
-          <el-input placeholder="请输入内容" v-model="metaData.mail" size="mini">
+          <el-input placeholder="必填" v-model="metaData.mail" size="mini">
             <template slot="prepend">邮箱</template>
           </el-input>
-          <el-input placeholder="请输入内容" v-model="metaData.link" size="mini">
+          <el-input placeholder="选填" v-model="metaData.link" size="mini">
             <template slot="prepend">网址</template>
           </el-input>
         </div>
@@ -122,6 +122,9 @@ export default {
 .el-input {
   max-width: 16rem;
 }
+.el-input + .el-input {
+  margin-top: 0.5rem;
+}
 </style>
 
 <style>
@@ -133,5 +136,12 @@ export default {
 .el-fade-in-linear-leave,
 .el-fade-in-linear-leave-active {
   opacity: 0;
+}
+.el-tooltip__popper.is-light {
+  border: 1px solid #ebeef5 !important;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+}
+.el-tooltip__popper.is-light[x-placement^="bottom"] .popper__arrow {
+  border-bottom-color: #ebeef5 !important;
 }
 </style>

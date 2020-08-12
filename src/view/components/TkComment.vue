@@ -4,13 +4,16 @@
     <div class="tk-main">
       <div class="tk-row">
         <div class="tk-meta">
-          <strong>{{ comment.nick }}</strong>
+          <strong v-if="!comment.link">{{ comment.nick }}</strong>
+          <el-link v-if="comment.link" :href="comment.link" target="_blank">
+            <strong>{{ comment.nick }}</strong>
+          </el-link>
           <span class="tk-tag" v-if="comment.master">博主</span>
           <small class="tk-time">{{ displayUpdated }}</small>
         </div>
         <div class="tk-action">
-          <el-link class="tk-action-link" type="primary" @click="onLike">赞 (0)</el-link>
-          <el-link class="tk-action-link" type="primary" @click="onReply">回复 (0)</el-link>
+          <!-- TODO: 点赞 -->
+          <el-link class="tk-action-link" type="primary" @click="onReply">回复{{ repliesCount }}</el-link>
         </div>
       </div>
       <div class="tk-content" v-html="comment.comment"></div>
@@ -53,12 +56,16 @@ export default {
   computed: {
     displayUpdated () {
       return timeago(this.comment.updated)
+    },
+    repliesCount () {
+      if (this.comment.replies && this.comment.replies.length > 0) {
+        return ` (${this.comment.replies.length})`
+      } else {
+        return ''
+      }
     }
   },
   methods: {
-    onLike () {
-      this.$emit('like', this.comment.id)
-    },
     onReply () {
       this.$emit('reply', this.comment.id)
     },
