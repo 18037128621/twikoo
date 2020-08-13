@@ -1,7 +1,7 @@
 # Twikoo
 
-一个轻量级微型博客系统，基于腾讯云开发。<br>
-A simple micro blog system based on Tencent CloudBase (tcb).
+一个简洁、安全、无后端的静态网站评论系统，基于腾讯云开发。<br>
+A simple, safe, serverless comment system based on Tencent CloudBase (tcb).
 
 ![Demo](./public/demo.png)
 
@@ -37,6 +37,10 @@ npm run serve
 npm run build
 npm run lint
 ```
+
+## 国际化 | I18N
+
+鉴于腾讯云在中国以外地区的支持程度，本项目暂无国际化计划。
 
 ## 许可 | License
 

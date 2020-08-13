@@ -1,5 +1,6 @@
 const tcb = require('tcb-admin-node')
 const md5 = require('blueimp-md5')
+const bowser = require('bowser')
 
 const app = tcb.init({
   env: tcb.getCurrentEnv()
@@ -49,13 +50,15 @@ function parse (comments) {
 }
 
 function toDto (comment, replies = []) {
+  const ua = bowser.getParser(comment.ua)
   return {
     id: comment._id,
     nick: comment.nick,
     mailMd5: comment.mailMd5 || md5(comment.mail),
     link: comment.link,
     comment: comment.comment,
-    ua: comment.ua,
+    os: [ua.getOSName(), ua.getOSVersion()].join(' '),
+    browser: [ua.getBrowserName(), ua.getBrowserVersion()].join(' '),
     master: comment.master,
     replies: replies,
     created: comment.created,

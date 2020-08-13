@@ -16,7 +16,6 @@
           @click="cancel">取消</el-button>
       <el-button class="tk-preview"
           size="small"
-          :disabled="!canSend"
           @click="preview">预览</el-button>
       <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip" :disabled="!disableTooltip">
         <!-- 套一层 div 解决 tooltip 在 disabled button 上不起作用 -->
@@ -29,7 +28,7 @@
         </div>
       </el-tooltip>
     </div>
-    <div class="tk-preview" v-if="isPreviewing" v-html="commentHtml"></div>
+    <div class="tk-preview-container" v-if="isPreviewing" v-html="commentHtml"></div>
   </div>
 </template>
 
@@ -128,6 +127,7 @@ export default {
 }
 .tk-row.actions {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   justify-content: flex-end;
 }
 .tk-avatar {
@@ -135,6 +135,13 @@ export default {
 }
 .tk-input {
   flex: 1;
+}
+.tk-preview-container {
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+  padding: 5px 15px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
 }
 .tk-send {
   margin-left: 10px;

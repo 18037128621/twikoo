@@ -4,12 +4,14 @@
     <div class="tk-main">
       <div class="tk-row">
         <div class="tk-meta">
-          <strong v-if="!comment.link">{{ comment.nick }}</strong>
-          <el-link v-if="comment.link" :href="comment.link" target="_blank">
+          <strong class="tk-nick" v-if="!comment.link">{{ comment.nick }}</strong>
+          <a class="tk-nick tk-nick-link" v-if="comment.link" :href="comment.link" target="_blank">
             <strong>{{ comment.nick }}</strong>
-          </el-link>
-          <span class="tk-tag" v-if="comment.master">博主</span>
+          </a>
+          <span class="tk-tag tk-tag-green" v-if="comment.master">博主</span>
           <small class="tk-time">{{ displayUpdated }}</small>
+          <div class="tk-tag">{{ comment.os }}</div>
+          <div class="tk-tag">{{ comment.browser }}</div>
         </div>
         <div class="tk-action">
           <!-- TODO: 点赞 -->
@@ -18,17 +20,20 @@
       </div>
       <div class="tk-content" v-html="comment.comment"></div>
       <!-- 回复列表 -->
-      <tk-comment v-for="reply in comment.replies"
-        :key="reply.id"
-        :comment="reply"
-        @load="onLoad"
-        @reply="onReplyReply" />
+      <div class="tk-replies" :class="{ 'tk-replies-expand': isExpanded }" ref="tk-replies">
+        <tk-comment v-for="reply in comment.replies"
+            :key="reply.id"
+            :comment="reply"
+            @load="onLoad"
+            @reply="onReplyReply" />
+        <div class="tk-expand" v-if="showExpand" @click="onExpand">查看更多...</div>
+      </div>
       <!-- 回复框 -->
       <tk-submit v-if="replying"
-        :reply-id="comment.id"
-        :pid="pid"
-        @load="onLoad"
-        @cancel="onCancel" />
+          :reply-id="comment.id"
+          :pid="pid"
+          @load="onLoad"
+          @cancel="onCancel" />
     </div>
   </div>
 </template>
@@ -46,7 +51,9 @@ export default {
   },
   data () {
     return {
-      pid: ''
+      pid: '',
+      isExpanded: false,
+      hasExpand: false
     }
   },
   props: {
@@ -63,9 +70,17 @@ export default {
       } else {
         return ''
       }
+    },
+    showExpand () {
+      return this.hasExpand && !this.isExpanded
     }
   },
   methods: {
+    showExpandIfNeed () {
+      if (this.comment.replies && this.comment.replies.length > 0 && this.$refs['tk-replies']) {
+        this.hasExpand = this.$refs['tk-replies'].scrollHeight > 200
+      }
+    },
     onReply () {
       this.$emit('reply', this.comment.id)
     },
@@ -80,7 +95,13 @@ export default {
     },
     onLoad () {
       this.$emit('load')
+    },
+    onExpand () {
+      this.isExpanded = true
     }
+  },
+  mounted () {
+    this.$nextTick(this.showExpandIfNeed)
   }
 }
 </script>
@@ -101,10 +122,48 @@ export default {
 .tk-avatar {
   margin-right: 1rem;
 }
+.tk-nick-link {
+  color: inherit;
+  text-decoration: none;
+}
+.tk-nick-link:hover {
+  color: #409eff;
+}
+.tk-tag {
+  display: inline-block;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  background-color: #f2f6fc;
+}
+.tk-tag-green {
+  background-color: #f0f9eb;
+  border: 1px solid #e1f3d8;
+  color: #67c23a;
+}
 .tk-comment {
   margin-top: 0.5rem;
   display: flex;
   flex-direction: row;
+}
+.tk-replies {
+  max-height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.tk-replies-expand {
+  max-height: none;
+}
+.tk-expand {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,1));
+  cursor: pointer;
 }
 .tk-submit {
   margin-top: 1rem;

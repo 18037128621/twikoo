@@ -1,5 +1,6 @@
 <template>
   <div class="tk-comments">
+    <tk-submit @load="initComments" />
     <div class="tk-comments-container" v-loading="loading">
       <h1>{{ comments.length }} 条评论</h1>
       <tk-comment v-for="comment in comments"
@@ -13,10 +14,12 @@
 </template>
 
 <script>
+import TkSubmit from './TkSubmit.vue'
 import TkComment from './TkComment.vue'
 
 export default {
   components: {
+    TkSubmit,
     TkComment
   },
   data () {

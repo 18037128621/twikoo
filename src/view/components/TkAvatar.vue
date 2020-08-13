@@ -6,13 +6,13 @@
       </div>
       <template v-slot:content>
         <div class="meta-input-group">
-          <el-input placeholder="必填" v-model="metaData.nick" size="mini">
+          <el-input placeholder="必填" v-model="metaData.nick" size="mini" @change="onMetaChange">
             <template slot="prepend">昵称</template>
           </el-input>
-          <el-input placeholder="必填" v-model="metaData.mail" size="mini">
+          <el-input placeholder="必填" v-model="metaData.mail" size="mini" @change="onMetaChange">
             <template slot="prepend">邮箱</template>
           </el-input>
-          <el-input placeholder="选填" v-model="metaData.link" size="mini">
+          <el-input placeholder="选填" v-model="metaData.link" size="mini" @change="onMetaChange">
             <template slot="prepend">网址</template>
           </el-input>
         </div>
@@ -61,6 +61,9 @@ export default {
     updateMeta () {
       localStorage.setItem('twikoo', JSON.stringify(this.metaData))
       this.$emit('update', this.metaData)
+    },
+    onMetaChange () {
+      this.updateMeta()
     },
     updateAvatar () {
       if (this.mailMd5) {
