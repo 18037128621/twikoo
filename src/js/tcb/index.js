@@ -1,5 +1,4 @@
 import {
-  constant,
   isNotSet,
   logger
 } from '../utils'
@@ -35,7 +34,7 @@ function checkOptions (options) {
     for (const missingOption of missingOptions) {
       logger.warn(`${missingOption} is required`)
     }
-    throw new Error(`${constant.logPrefix} failed to init`)
+    throw new Error('Twikoo: failed to init')
   }
 }
 

@@ -1,13 +1,12 @@
 # Twikoo
 
-一个简洁、安全、无后端的静态网站评论系统，基于腾讯云开发。<br>
+一个（仍处于开发初期的）简洁、安全、无后端的静态网站评论系统，基于腾讯云开发。<br>
 A simple, safe, serverless comment system based on Tencent CloudBase (tcb).
 
-![Demo](./public/demo.png)
+![Demo](./docs/demo.png)
 
 ## 特色 | Features
 
-* 发推 | Send twii
 * 评论 | Comment
 * 点赞 | Like
 * 纯静态 | Static pages
@@ -17,12 +16,23 @@ A simple, safe, serverless comment system based on Tencent CloudBase (tcb).
 ## 快速开始 | Quick Start
 
 1. 注册 https://console.cloud.tencent.com/tcb/
-2. 初始化数据库
+2. 部署云函数
 ```
 npm install
 npx tcb login
-npx tcb functions:deploy migrate
-npx tcb functions:invoke migrate
+npx tcb functions:deploy
+```
+3. HTML 片段
+``` html
+...
+<div id="twikoo"></div>
+<script src="./twikoo.all.min.js"></script>
+<script>
+  twikoo.init({
+    envId: 'imaegoo-16fe3d'
+  });
+</script>
+...
 ```
 
 ## 贡献者 | Contributors
@@ -32,10 +42,8 @@ npx tcb functions:invoke migrate
 ## 开发 | Development
 
 ```
-npm install
 npm run serve
 npm run build
-npm run lint
 ```
 
 ## 国际化 | I18N

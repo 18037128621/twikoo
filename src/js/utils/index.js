@@ -1,4 +1,3 @@
-import constant from './constant'
 import timeago from './timeago'
 import marked from './marked'
 
@@ -8,13 +7,13 @@ const isNotSet = (option) => {
 
 const logger = {
   info: (message) => {
-    console.log(`${constant.logPrefix} ${message}`)
+    console.log(`Twikoo: ${message}`)
   },
   warn: (message) => {
-    console.warn(`${constant.logPrefix} ${message}`)
+    console.warn(`Twikoo: ${message}`)
   },
   error: (message) => {
-    console.error(`${constant.logPrefix} ${message}`)
+    console.error(`Twikoo: ${message}`)
   }
 }
 
@@ -23,7 +22,6 @@ const timestamp = (date = new Date()) => {
 }
 
 export {
-  constant,
   isNotSet,
   logger,
   timeago,
