@@ -1,6 +1,6 @@
 <template>
   <div class="tk-comment" :id="comment.id">
-    <tk-avatar :nick="comment.nick" :mail-md5="comment.mailMd5" readonly />
+    <tk-avatar :nick="comment.nick" :mail-md5="comment.mailMd5" :link="comment.link" />
     <div class="tk-main">
       <div class="tk-row">
         <div class="tk-meta">
@@ -14,8 +14,16 @@
           <div class="tk-tag">{{ comment.browser }}</div>
         </div>
         <div class="tk-action">
-          <!-- TODO: 点赞 -->
-          <el-link class="tk-action-link" type="primary" @click="onReply">回复{{ repliesCount }}</el-link>
+          <a class="tk-action-link" @click="onReply">
+            <span class="tk-replies-icon" v-html="iconHeart"></span>
+            <span class="tk-replies-icon tk-replies-icon-solid" v-html="iconHeartSolid"></span>
+            <span class="tk-replies-count">{{ repliesCount }}</span>
+          </a>
+          <a class="tk-action-link" @click="onReply">
+            <span class="tk-replies-icon" v-html="iconComment"></span>
+            <span class="tk-replies-icon tk-replies-icon-solid" v-html="iconCommentSolid"></span>
+            <span class="tk-replies-count">{{ repliesCount }}</span>
+          </a>
         </div>
       </div>
       <div class="tk-content" v-html="comment.comment"></div>
@@ -42,6 +50,10 @@
 import { timeago } from '../../js/utils'
 import TkAvatar from './TkAvatar.vue'
 import TkSubmit from './TkSubmit.vue'
+import iconComment from '@fortawesome/fontawesome-free/svgs/regular/comment.svg'
+import iconCommentSolid from '@fortawesome/fontawesome-free/svgs/solid/comment.svg'
+import iconHeart from '@fortawesome/fontawesome-free/svgs/regular/thumbs-up.svg'
+import iconHeartSolid from '@fortawesome/fontawesome-free/svgs/solid/thumbs-up.svg'
 
 export default {
   name: 'tk-comment', // 允许组件模板递归地调用自身
@@ -51,6 +63,10 @@ export default {
   },
   data () {
     return {
+      iconComment,
+      iconCommentSolid,
+      iconHeart,
+      iconHeartSolid,
       pid: '',
       isExpanded: false,
       hasExpand: false
@@ -66,7 +82,7 @@ export default {
     },
     repliesCount () {
       if (this.comment.replies && this.comment.replies.length > 0) {
-        return ` (${this.comment.replies.length})`
+        return `(${this.comment.replies.length})`
       } else {
         return ''
       }
@@ -116,8 +132,40 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
+.tk-action {
+  display: flex;
+  align-items: center;
+}
 .tk-action-link {
   margin-left: 0.5rem;
+  color: #409eff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+.tk-action-link .tk-replies-icon-solid {
+  display: none;
+}
+.tk-action-link:hover .tk-replies-icon {
+  display: none;
+}
+.tk-action-link:hover .tk-replies-icon-solid {
+  display: block;
+}
+.tk-replies-count {
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
+.tk-replies-icon {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  line-height: 0;
+}
+.tk-replies-icon /deep/ svg {
+  fill: #409eff;
 }
 .tk-avatar {
   margin-right: 1rem;

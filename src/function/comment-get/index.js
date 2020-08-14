@@ -51,13 +51,14 @@ function parse (comments) {
 
 function toDto (comment, replies = []) {
   const ua = bowser.getParser(comment.ua)
+  const os = ua.getOS()
   return {
     id: comment._id,
     nick: comment.nick,
     mailMd5: comment.mailMd5 || md5(comment.mail),
     link: comment.link,
     comment: comment.comment,
-    os: [ua.getOSName(), ua.getOSVersion()].join(' '),
+    os: [os.name, os.versionName ? os.versionName : os.version].join(' '),
     browser: [ua.getBrowserName(), ua.getBrowserVersion()].join(' '),
     master: comment.master,
     replies: replies,

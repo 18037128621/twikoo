@@ -1,13 +1,16 @@
 <template>
   <div class="tk-submit">
     <div class="tk-row">
-      <tk-avatar :nick="nick" :mail="mail" :link="link" @update="onMetaUpdate" />
-      <el-input class="tk-input"
-          type="textarea"
-          v-model="comment"
-          placeholder="请输入内容"
-          :autosize="{ minRows: 3 }"
-          @change="updatePreview" />
+      <tk-avatar :mail="mail" />
+      <div class="tk-col">
+        <tk-meta-input :nick="nick" :mail="mail" :link="link" @update="onMetaUpdate" />
+        <el-input class="tk-input"
+            type="textarea"
+            v-model="comment"
+            placeholder="请输入内容"
+            :autosize="{ minRows: 3 }"
+            @change="updatePreview" />
+      </div>
     </div>
     <div class="tk-row actions">
       <el-button class="tk-cancel"
@@ -17,16 +20,11 @@
       <el-button class="tk-preview"
           size="small"
           @click="preview">预览</el-button>
-      <el-tooltip class="item" effect="dark" placement="bottom" :content="disableTooltip" :disabled="!disableTooltip">
-        <!-- 套一层 div 解决 tooltip 在 disabled button 上不起作用 -->
-        <div class="tk-send">
-          <el-button class="tk-send-button"
-              type="primary"
-              size="small"
-              :disabled="!canSend"
-              @click="send">发送</el-button>
-        </div>
-      </el-tooltip>
+      <el-button class="tk-send"
+          type="primary"
+          size="small"
+          :disabled="!canSend"
+          @click="send">发送</el-button>
     </div>
     <div class="tk-preview-container" v-if="isPreviewing" v-html="commentHtml"></div>
   </div>
@@ -34,11 +32,13 @@
 
 <script>
 import TkAvatar from './TkAvatar.vue'
+import TkMetaInput from './TkMetaInput.vue'
 import { marked } from '../../js/utils'
 
 export default {
   components: {
-    TkAvatar
+    TkAvatar,
+    TkMetaInput
   },
   props: {
     replyId: String,
@@ -61,12 +61,6 @@ export default {
           && !!this.nick
           && !!this.mail
           && !!this.comment
-    },
-    disableTooltip () {
-      if (this.isSending) return '发送中'
-      else if (!this.nick) return '请填写昵称'
-      else if (!this.mail) return '请填写邮箱'
-      else if (!this.comment) return '请填写内容'
     }
   },
   methods: {
@@ -124,6 +118,13 @@ export default {
 .tk-row {
   display: flex;
   flex-direction: row;
+}
+.tk-col {
+  display: flex;
+  flex-direction: column;
+}
+.tk-meta-input {
+  margin-bottom: 0.5rem;
 }
 .tk-row.actions {
   margin-top: 1rem;
