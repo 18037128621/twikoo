@@ -13,12 +13,16 @@
           <div class="tk-tag">{{ comment.os }}</div>
           <div class="tk-tag">{{ comment.browser }}</div>
         </div>
-        <tk-action :like-count="comment.replies.length"
+        <tk-action :liked="comment.liked"
+            :like-count="comment.like"
             :replies-count="comment.replies.length"
-            @like="onReply"
+            @like="onLike"
             @reply="onReply" />
       </div>
-      <div class="tk-content" v-html="comment.comment"></div>
+      <div class="tk-content">
+        <span v-if="comment.rid">回复 <a :href="`#${comment.rid}`">{{ comment.ruser }}</a> :</span>
+        <span v-html="comment.comment"></span>
+      </div>
       <!-- 回复列表 -->
       <div class="tk-replies" :class="{ 'tk-replies-expand': isExpanded }" ref="tk-replies">
         <tk-comment v-for="reply in comment.replies"
@@ -75,6 +79,18 @@ export default {
       if (this.comment.replies && this.comment.replies.length > 0 && this.$refs['tk-replies']) {
         this.hasExpand = this.$refs['tk-replies'].scrollHeight > 200
       }
+    },
+    onLike () {
+      const updated = this.$tcb.app.callFunction({
+        name: 'comment-like',
+        data: { id: this.comment.id }
+      })
+      if (this.comment.liked) {
+        this.comment.like--
+      } else {
+        this.comment.like++
+      }
+      this.comment.liked = !this.comment.liked
     },
     onReply () {
       this.$emit('reply', this.comment.id)

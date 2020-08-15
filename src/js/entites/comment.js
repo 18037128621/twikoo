@@ -19,6 +19,7 @@ class Comment {
     this.isNotified = model.isNotified // 是否已邮件通知
     this.isSpam = model.isSpam // 是否垃圾评论
     this.master = model.master || false // 博主标识
+    this.like = model.like // 赞数
 
     /* 回复数据 */
     this.pid = model.pid // 回复的 ID

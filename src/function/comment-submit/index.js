@@ -1,9 +1,8 @@
-const tcb = require('tcb-admin-node')
+const tcb = require('@cloudbase/node-sdk')
 const md5 = require('blueimp-md5')
 
-const app = tcb.init({
-  env: tcb.getCurrentEnv()
-})
+const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV })
+const auth = app.auth()
 const db = app.database()
 
 /**
@@ -53,6 +52,7 @@ function parse (comment) {
     mailMd5: comment.mail ? md5(comment.mail) : '',
     link: comment.link ? comment.link : '',
     ua: comment.ua,
+    ip: auth.getClientIP(),
     url: comment.url,
     comment: comment.comment,
     pid: comment.pid,

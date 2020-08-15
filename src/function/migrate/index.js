@@ -1,4 +1,4 @@
-const tcb = require('tcb-admin-node')
+const tcb = require('@cloudbase/node-sdk')
 
 const collections = [
   'comment',
@@ -6,9 +6,7 @@ const collections = [
   'counter'
 ]
 
-const app = tcb.init({
-  env: tcb.getCurrentEnv()
-})
+const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV })
 const db = app.database()
 
 /**

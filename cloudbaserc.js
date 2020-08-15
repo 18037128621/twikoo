@@ -17,6 +17,7 @@ module.exports = {
   functions: [
     { name: 'migrate', ...defaultFunctionConfig },
     { name: 'comment-get', ...defaultFunctionConfig },
+    { name: 'comment-like', ...defaultFunctionConfig },
     { name: 'comment-submit', ...defaultFunctionConfig }
   ]
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="tk-action">
-    <a class="tk-action-link" @click="onLike">
-      <span class="tk-action-icon" v-html="iconHeart"></span>
-      <span class="tk-action-icon tk-action-icon-solid" v-html="iconHeartSolid"></span>
+    <a class="tk-action-link" :class="{ 'tk-liked': liked }" @click="onLike">
+      <span class="tk-action-icon" v-html="iconLike"></span>
+      <span class="tk-action-icon tk-action-icon-solid" v-html="iconLikeSolid"></span>
       <span class="tk-action-count">{{ likeCountStr }}</span>
     </a>
     <a class="tk-action-link" @click="onReply">
@@ -16,19 +16,20 @@
 <script>
 import iconComment from '@fortawesome/fontawesome-free/svgs/regular/comment.svg'
 import iconCommentSolid from '@fortawesome/fontawesome-free/svgs/solid/comment.svg'
-import iconHeart from '@fortawesome/fontawesome-free/svgs/regular/thumbs-up.svg'
-import iconHeartSolid from '@fortawesome/fontawesome-free/svgs/solid/thumbs-up.svg'
+import iconLike from '@fortawesome/fontawesome-free/svgs/regular/thumbs-up.svg'
+import iconLikeSolid from '@fortawesome/fontawesome-free/svgs/solid/thumbs-up.svg'
 
 export default {
   data () {
     return {
       iconComment,
       iconCommentSolid,
-      iconHeart,
-      iconHeartSolid
+      iconLike,
+      iconLikeSolid
     }
   },
   props: {
+    liked: Boolean,
     likeCount: Number,
     repliesCount: Number
   },
@@ -66,9 +67,11 @@ export default {
 .tk-action-link .tk-action-icon-solid {
   display: none;
 }
+.tk-action-link.tk-liked .tk-action-icon,
 .tk-action-link:hover .tk-action-icon {
   display: none;
 }
+.tk-action-link.tk-liked .tk-action-icon-solid,
 .tk-action-link:hover .tk-action-icon-solid {
   display: block;
 }
