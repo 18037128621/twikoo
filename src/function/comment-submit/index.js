@@ -1,5 +1,6 @@
 const tcb = require('@cloudbase/node-sdk')
 const md5 = require('blueimp-md5')
+const mailer = require('./utils/mailer')
 
 const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV })
 const auth = app.auth()
