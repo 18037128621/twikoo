@@ -2,7 +2,7 @@
   <div class="tk-comments">
     <tk-submit @load="initComments" />
     <div class="tk-comments-container" v-loading="loading">
-      <h1>{{ comments.length }} 条评论</h1>
+      <div class="tk-comments-title">{{ comments.length }} 条评论</div>
       <tk-comment v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
@@ -52,6 +52,11 @@ export default {
 </script>
 
 <style scoped>
+.tk-comments-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
 .tk-comments-container {
   min-height: 10rem;
 }

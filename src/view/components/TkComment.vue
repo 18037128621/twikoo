@@ -105,7 +105,10 @@ export default {
       this.$emit('reply', '')
     },
     onLoad () {
+      this.pid = ''
+      this.$emit('reply', '')
       this.$emit('load')
+      this.onExpand()
     },
     onExpand () {
       this.isExpanded = true
